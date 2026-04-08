@@ -1,0 +1,10 @@
+name: algo-brain-env
+version: "1.0"
+
+environment:
+  entry_point: environment:AlgoBrainEnv
+
+tasks:
+  - name: easy
+  - name: medium
+  - name: hard
