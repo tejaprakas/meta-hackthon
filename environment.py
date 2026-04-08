@@ -55,6 +55,3 @@ class AlgoBrainEnv:
             done = True
 
         return self.state, float(reward), done, False, {}
-
-    def state(self):
-        return self.state
