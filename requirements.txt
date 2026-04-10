@@ -1,3 +1,7 @@
 numpy
 requests
 torch
+gradio>=4.0.0
+plotly>=5.0.0
+pandas>=1.3.0
+huggingface-hub>=0.16.0

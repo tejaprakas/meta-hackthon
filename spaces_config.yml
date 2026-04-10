@@ -1,0 +1,7 @@
+# Hugging Face Spaces Configuration
+# Save as: .huggingface/spaces_config.yml
+
+## Gradio App Configuration for Hugging Face Spaces
+app_file: app.py
+sdk: gradio
+sdk_version: "4.0.0"
