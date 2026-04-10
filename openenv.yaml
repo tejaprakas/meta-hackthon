@@ -1,44 +1,90 @@
-name: algo-brain-env
-version: "1.0"
-description: "AlgoBrain RL Environment - Optimize algorithm performance with resource constraints"
+name: algobrain-code-review
+version: "2.0"
+description: |
+  AlgoBrain Code Review Environment: An interactive environment where LLM agents
+  review and improve algorithm implementations. The agent receives code snippets,
+  reviews them, and suggests improvements across multiple difficulty levels.
+  
+  Real-world application: Algorithm interview prep, code quality review systems,
+  automated code improvement tools.
 
 environment:
   entry_point: environment:AlgoBrainEnv
   type: gym
-  config:
-    observation_space:
-      type: box
-      shape: [3]
-      dtype: float32
-      bounds: [[50, 95], [20, 80], [0.7, 1.0]]
-    action_space:
-      type: discrete
-      n: 2
-    max_episode_steps: 10
+  
+  observation_space:
+    type: object
+    schema:
+      code:
+        type: string
+        description: "Current code snippet being reviewed"
+      feedback:
+        type: string
+        description: "Environmental feedback on current submission"
+      task_name:
+        type: string
+        description: "Name of the current task"
+      step:
+        type: integer
+        description: "Current step number"
+      max_steps:
+        type: integer
+        description: "Maximum steps allowed per episode"
+  
+  action_space:
+    type: object
+    schema:
+      suggested_code:
+        type: string
+        description: "The improved code implementation"
+      reasoning:
+        type: string
+        description: "Explanation of the improvements made"
+  
+  reward_space:
+    type: object
+    schema:
+      value:
+        type: number
+        minimum: 0.0
+        maximum: 1.0
+        description: "Normalized reward score"
+      breakdown:
+        type: object
+        description: "Detailed breakdown of reward components"
 
 tasks:
   - name: easy
-    description: "Easy task - optimize accuracy with moderate resource constraints"
-    reward_scale: 1.0
+    description: "Bubble Sort Implementation"
+    task_id: bubble_sort
     difficulty_level: 1
+    objective: "Implement correct bubble sort algorithm"
+    expected_duration: 3
     
   - name: medium
-    description: "Medium task - balance performance and efficiency"
-    reward_scale: 0.5
+    description: "Quicksort with Partitioning"
+    task_id: quicksort
     difficulty_level: 2
+    objective: "Implement efficient quicksort with proper partitioning"
+    expected_duration: 4
     
   - name: hard
-    description: "Hard task - maximize efficiency with minimal resources"
-    reward_scale: 0.2
+    description: "Dynamic Programming - Longest Increasing Subsequence"
+    task_id: dynamic_programming
     difficulty_level: 3
+    objective: "Solve LIS problem with optimal DP approach"
+    expected_duration: 5
 
-training:
-  algorithm: REINFORCE
-  learning_rate: 0.01
-  discount_factor: 0.99
-  episodes: 30
-  
-safety_constraints:
-  cpu_temp_limit: 95
-  battery_min: 20
-  battery_max: 80
+grading:
+  correctness:
+    weight: 0.5
+    description: "Does the code solve the problem correctly?"
+  efficiency:
+    weight: 0.3
+    description: "Is the solution efficient (time/space complexity)?"
+  clarity:
+    weight: 0.2
+    description: "Is the code clear and well-structured?"
+
+max_episode_steps: 5
+timeout_seconds: 300
