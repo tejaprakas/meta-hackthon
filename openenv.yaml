@@ -3,8 +3,23 @@ version: "1.0"
 
 environment:
   entry_point: environment:AlgoBrainEnv
+  env_config:
+    max_episode_steps: 10
+    state_shape: [3]
+    action_space: 2
 
 tasks:
   - name: easy
+    description: "Easy task - optimize accuracy with moderate resource constraints"
+    reward_scale: 1.0
   - name: medium
+    description: "Medium task - balance performance and efficiency"
+    reward_scale: 0.5
   - name: hard
+    description: "Hard task - maximize efficiency with minimal resources"
+    reward_scale: 0.2
+
+reset_config:
+  cpu_temp_range: [50, 70]
+  battery_range: [20, 80]
+  accuracy_range: [0.7, 0.9]
