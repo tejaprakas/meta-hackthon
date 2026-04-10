@@ -1,0 +1,90 @@
+name: algobrain-code-review
+version: "2.0"
+description: |
+  AlgoBrain Code Review Environment: An interactive environment where LLM agents
+  review and improve algorithm implementations. The agent receives code snippets,
+  reviews them, and suggests improvements across multiple difficulty levels.
+  
+  Real-world application: Algorithm interview prep, code quality review systems,
+  automated code improvement tools.
+
+environment:
+  entry_point: environment_v2:AlgoBrainEnv
+  type: gym
+  
+  observation_space:
+    type: object
+    schema:
+      code:
+        type: string
+        description: "Current code snippet being reviewed"
+      feedback:
+        type: string
+        description: "Environmental feedback on current submission"
+      task_name:
+        type: string
+        description: "Name of the current task"
+      step:
+        type: integer
+        description: "Current step number"
+      max_steps:
+        type: integer
+        description: "Maximum steps allowed per episode"
+  
+  action_space:
+    type: object
+    schema:
+      suggested_code:
+        type: string
+        description: "The improved code implementation"
+      reasoning:
+        type: string
+        description: "Explanation of the improvements made"
+  
+  reward_space:
+    type: object
+    schema:
+      value:
+        type: number
+        minimum: 0.0
+        maximum: 1.0
+        description: "Normalized reward score"
+      breakdown:
+        type: object
+        description: "Detailed breakdown of reward components"
+
+tasks:
+  - name: easy
+    description: "Bubble Sort Implementation"
+    task_id: bubble_sort
+    difficulty_level: 1
+    objective: "Implement correct bubble sort algorithm"
+    expected_duration: 3
+    
+  - name: medium
+    description: "Quicksort with Partitioning"
+    task_id: quicksort
+    difficulty_level: 2
+    objective: "Implement efficient quicksort with proper partitioning"
+    expected_duration: 4
+    
+  - name: hard
+    description: "Dynamic Programming - Longest Increasing Subsequence"
+    task_id: dynamic_programming
+    difficulty_level: 3
+    objective: "Solve LIS problem with optimal DP approach"
+    expected_duration: 5
+
+grading:
+  correctness:
+    weight: 0.5
+    description: "Does the code solve the problem correctly?"
+  efficiency:
+    weight: 0.3
+    description: "Is the solution efficient (time/space complexity)?"
+  clarity:
+    weight: 0.2
+    description: "Is the code clear and well-structured?"
+
+max_episode_steps: 5
+timeout_seconds: 300
