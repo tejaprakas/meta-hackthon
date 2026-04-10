@@ -1,25 +1,44 @@
 name: algo-brain-env
 version: "1.0"
+description: "AlgoBrain RL Environment - Optimize algorithm performance with resource constraints"
 
 environment:
   entry_point: environment:AlgoBrainEnv
-  env_config:
+  type: gym
+  config:
+    observation_space:
+      type: box
+      shape: [3]
+      dtype: float32
+      bounds: [[50, 95], [20, 80], [0.7, 1.0]]
+    action_space:
+      type: discrete
+      n: 2
     max_episode_steps: 10
-    state_shape: [3]
-    action_space: 2
 
 tasks:
   - name: easy
     description: "Easy task - optimize accuracy with moderate resource constraints"
     reward_scale: 1.0
+    difficulty_level: 1
+    
   - name: medium
     description: "Medium task - balance performance and efficiency"
     reward_scale: 0.5
+    difficulty_level: 2
+    
   - name: hard
     description: "Hard task - maximize efficiency with minimal resources"
     reward_scale: 0.2
+    difficulty_level: 3
 
-reset_config:
-  cpu_temp_range: [50, 70]
-  battery_range: [20, 80]
-  accuracy_range: [0.7, 0.9]
+training:
+  algorithm: REINFORCE
+  learning_rate: 0.01
+  discount_factor: 0.99
+  episodes: 30
+  
+safety_constraints:
+  cpu_temp_limit: 95
+  battery_min: 20
+  battery_max: 80
